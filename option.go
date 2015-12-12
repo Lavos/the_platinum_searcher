@@ -71,6 +71,9 @@ type SearchOption struct {
 	Depth            int      `long:"depth" default:"25" description:"Search up to NUM directories deep"`
 	Follow           bool     `short:"f" long:"follow" description:"Follow symlinks"`
 	Hidden           bool     `long:"hidden" description:"Search hidden files and directories"`
+
+	Pattern string `short:"p" long:"pattern" default:"" description:"Search using this term."`
+	Paths []string `short:"d" long:"path" description:"Search within these paths."`
 }
 
 func newOptionParser(opts *Option) *flags.Parser {
@@ -84,6 +87,6 @@ func newOptionParser(opts *Option) *flags.Parser {
 
 	parser := flags.NewParser(opts, flags.Default)
 	parser.Name = "pt"
-	parser.Usage = "[OPTIONS] PATTERN [PATH]"
+	parser.Usage = "[OPTIONS]"
 	return parser
 }

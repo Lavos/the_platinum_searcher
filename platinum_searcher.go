@@ -47,21 +47,16 @@ func (p PlatinumSearcher) Run(args []string) int {
 		return ExitCodeOK
 	}
 
-	if len(args) == 0 {
-		parser.WriteHelp(p.Err)
-		return ExitCodeError
-	}
-
 	if !terminal.IsTerminal(os.Stdout) {
 		opts.OutputOption.EnableColor = false
 		opts.OutputOption.EnableGroup = false
 	}
 
 	search := search{
-		roots: p.rootsFrom(args),
+		roots: p.rootsFrom(opts.SearchOption.Paths),
 		out:   p.Out,
 	}
-	if err = search.start(p.patternFrom(args)); err != nil {
+	if err = search.start(opts.SearchOption.Pattern); err != nil {
 		fmt.Fprintf(p.Err, "%s\n", err)
 		return ExitCodeError
 	}
@@ -73,8 +68,8 @@ func (p PlatinumSearcher) patternFrom(args []string) string {
 }
 
 func (p PlatinumSearcher) rootsFrom(args []string) []string {
-	if len(args) > 1 {
-		return args[1:]
+	if len(args) > 0 {
+		return args
 	} else {
 		return []string{"."}
 	}
